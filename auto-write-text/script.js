@@ -12,3 +12,4 @@ function writeText() {
 }
 
 setInterval(writeText,100)
+// ni
