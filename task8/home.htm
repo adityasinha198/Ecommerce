@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-Commerce Project</title>
+    <!--<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/fontawesome.min.css" integrity="sha384-wESLQ85D6gbsF459vf1CiZ2+rr+CsxRY0RpiF1tLlQpDnAgg6rwdsUF1+Ics2bni" crossorigin="anonymous"> -->
+    <link rel="stylesheet" href="style.css">
+    <!-- <script src="/index.js" defer></script> -->
+</head>
+<body>
+    <header>
+        <ul>
+            <li><a href="#">HOME</a></li>
+            <li><a href="./dynamicstore.html">STORE</a></li>
+            <li><a href="./about.html">ABOUT</a></li>
+        </ul>
+        <h1>The Generics</h1>
+        <button class="latest-album">Get our Latest Album</button>
+        <button class="play-btn">►</button>
+    </header>
+    <section id="tours" class='container'>
+        <h2>TOURS</h2>
+        <div>
+            <div class="tour-item">
+                <span class="tour-date">JUL16</span>
+                <span class="tour-place">DETROIT, MI</span>
+                <span class="tour-spec-place">DTE ENERGY MUSIC THEATRE</span>
+                <button class="buy-btn">BUY TICKETS</button>
+            </div>
+            <div class="tour-item">
+                <span class="tour-date">JUL19</span>
+                <span class="tour-place">TORONTO,ON</span>
+                <span class="tour-spec-place">BUDWEISER STAGE</span>
+                <button class="buy-btn">BUY TICKETS</button>
+            </div>
+            <div class="tour-item">
+                <span class="tour-date">JUL 22</span>
+                <span class="tour-place"> BRISTOW, VA</span>
+                <span class="tour-spec-place">JIGGY LUBE LIVE</span>
+                <button class="buy-btn">BUY TICKETS</button>
+            </div>
+            <div class="tour-item">
+                <span class="tour-date">JUL 29</span>
+                <span class="tour-place">PHOENIX, AZ</span>
+                <span class="tour-spec-place"> AK-CHIN PAVILION</span>
+                <button class="buy-btn">BUY TICKETS</button>
+            </div>
+            <div class="tour-item">
+                <span class="tour-date">AUG 2</span>
+                <span class="tour-place">LAS VEGAS, NV</span>
+                <span class="tour-spec-place">T-MOBILE ARENA</span>
+                <button class="buy-btn">BUY TICKETS</button>
+            </div>
+            <div class="tour-item">
+                <span class="tour-date">AUG 7</span>
+                <span class="tour-place">CONCORD, CA</span>
+                <span class="tour-spec-place"> CONCORD PAVILION</span>
+                <button class="buy-btn">BUY TICKETS</button>
+            </div>
+        </div>
+    </section>
+    <footer>
+        <div class="footer-title">
+            The Generics
+        </div>
+        <div class="footer-icons">
+            <ul>
+                <li><a href="https://www.youtube.com">
+                    <img src="data:image/png;base64,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" alt="">
+                            </a></li>
+                </a></li>
+                <li><a href="https://spotify.com">
+                    <img src="data:image/png;base64,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" alt="">
+                </a></li>
+                <li><a href="https://facebook.com">
+                    <img src="https://1000logos.net/wp-content/uploads/2021/04/Facebook-logo.png" alt="">
+                </a></li>
+            </ul>
+        </div>
+    </footer>
+</body>
+</html>
