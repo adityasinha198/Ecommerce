@@ -246,6 +246,8 @@ function addtocart(res){
     //console.log("Hello")
     let total_cart_price=0;
 
+    
+
     for(let i=0;i<res.data.prods.length;i++){
         const prod=res.data.prods[i];
         const ID='a'+prod.id;
