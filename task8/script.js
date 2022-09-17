@@ -1,100 +1,47 @@
+
+const pagination = document.getElementById('pagination')
+const cartPaginatiion = document.getElementById('cartPagination')
 window.addEventListener("DOMContentLoaded",()=>   
-{
-   axios.get("http://localhost:3000/products").then((res)=>{//add localhost vali link
-       // console.log(response.data)
-       // for(var i=0;i<response.data.length;i++){
-       //     showNewUserOnScreen(response.data[i])
-       // }
-       const song = document.getElementById("music-content")
-       
-   console.log(res.data[0])
-   for(let i=0;i<res.data.length;i++){
-       let info= res.data[i]
-   const ID = info.id
-   const name = info.title
-   const price = info.price
-   const img_url = info.imageUrl
+{  
+    const page = 1
    
-   const listen = document.createElement('div')
 
-   listen.setAttribute("id",`a${ID}`)
-   console.log(listen)
-   console.log(img_url)
-   
-   listen.innerHTML  = 
-   
-   `<h3> ${name}</h3>
-   <div class="image-container">
-       <img class="prod-images" src="${img_url}"
-       alt="">
-   </div>
-   <div class="prod-details">
-       
-        <span>$<span>${price}  </span></span>
+   axios.get(`http://localhost:3000/products/?page=${page}`)
+   .then((res)=>{
+    listproducts(res)
+    showPagination(res.data)
+
+
+        })
       
-       <button class="shop-item-button" type="button" onClick="postCartItem('${ID}')">ADD TO CART</button>
-   
-       
-   </div>
-
-</div>`
-song.appendChild(listen)
-   }
-
-   
-
-   
-
-
-
-   }).catch((err)=>{
+        .catch((err)=>{
        document.body.innerHTML="<h4>Something went wrong<h4>"
        console.log(err)
     })
-        let total_cart_price=0;
-       axios.get("http://localhost:3000/cart").then(res=>{
-for(let i=0;i<res.data.length;i++){
-        const prod=res.data[i];
-        const ID='a'+prod.id;
-        const name=prod.title;
-        const price=prod.price;
-        const qty=prod.cartItem.quantity;
-        const img_src=prod.imageUrl;
-// total_cart_price=total_cart_price+price;
+       // console.log("Hello")
+        
+    
+    
+       axios.get(`http://localhost:3000/cart/?page=${page}`)
+       .then(res=>{
+        console.log(res.data)
+         addtocart(res)
+         showcartPagination(res.data)
 
-        //  console.log(res.data[1].cartItem.quantity)
-
-        document.querySelector('.cart-number').innerText = qty;
-
-        const cart_item = document.createElement('div');
-        cart_item.classList.add('cart-row');
-        cart_item.setAttribute('id',`in-cart-${ID}`);
-        total_cart_price = parseFloat(total_cart_price) + parseFloat(price)
-        total_cart_price = total_cart_price.toFixed(2)
-        document.querySelector('#total-value').innerText = `${total_cart_price}`;
-        cart_item.innerHTML = `
-        <span class='cart-item cart-column'>
-        <img class='cart-img' src="${img_src}" alt="">
-            <span>${name}</span>
-    </span>
-    <span class='cart-price cart-column'>${price}</span>
-    <span class='cart-quantity cart-column'>
-        <input type="text" value="${qty}">
-        <button>REMOVE</button>
-    </span>`
-        cart_items.appendChild(cart_item)
-}
-       }).catch(err=>{
+       })
+       .catch(err=>{
         console.log(err)
        })
+    
 })
 
-const cart_items = document.querySelector('#cart .cart-items');
+
 
 
 function postCartItem(id){
     console.log(id)
-    axios.post("http://localhost:3000/cart",{productId: id}).then(response=>{
+    axios.post("http://localhost:3000/cart",
+    {productId: id}).then(response=>{
         if(response.status===200){
             notifyUsers(response.data.message);
         }
@@ -121,6 +68,7 @@ const parentContainer = document.getElementById('EcommerceContainer');
 parentContainer.addEventListener('click',(e)=>{
 
     if (e.target.className=='shop-item-button'){
+        const cart_items = document.querySelector('#cart .cart-items');
         const id = e.target.parentNode.parentNode.id
         console.log(`#${id}`);
         
@@ -191,3 +139,200 @@ parentContainer.addEventListener('click',(e)=>{
         e.target.parentNode.parentNode.remove()
     }
 })
+
+function showPagination({
+    currentPage,
+    hasNextPage, 
+    hasPreviousPage,
+    lastPage,
+    nextPage,
+    previousPage
+    
+    
+       }) {
+        
+        
+        pagination.innerHTML = ``
+
+        if (hasPreviousPage) {
+            const btn2 = document.createElement('button')
+            btn2.innerHTML  = previousPage
+            btn2.addEventListener('click',() => getProducts(previousPage))
+            pagination.appendChild(btn2)
+        }
+            const btn1 = document.createElement('button')
+            btn1.innerHTML  = `<h3>${currentPage}</h3>`
+            btn1.addEventListener('click',() => getProducts(currentPage))
+            pagination.appendChild(btn1)
+    
+        if (hasNextPage) {
+            const btn3 = document.createElement('button')
+            btn3.innerHTML  = nextPage
+            btn3.addEventListener('click',() => getProducts(nextPage))
+            pagination.appendChild(btn3)
+    
+        
+    
+    
+    
+       }
+    }
+
+
+
+    function getProducts(page){
+    axios.get(`http://localhost:3000/products/?page=${page}`)
+   .then((res)=>{
+    listproducts(res)
+    showPagination(res.data)
+
+    })
+    .catch(err => console.log(err))
+}
+
+    function listproducts(res){
+
+    const song = document.getElementById("music-content")
+    if(song.innerHTML !=null){
+        song.innerHTML = null
+    }
+    
+        
+    //console.log(res.data.prods[0])
+    for(let i=0;i<res.data.prods.length;i++){
+        let info= res.data.prods[i]
+    const ID = info.id
+    const name = info.title
+    const price = info.price
+    const img_url = info.imageUrl
+    
+    const listen = document.createElement('div')
+ 
+    listen.setAttribute("id",`a${ID}`)
+    //console.log(listen)
+    //console.log(img_url)
+    
+    listen.innerHTML  = 
+    
+    `<h3> ${name}</h3>
+    <div class="image-container">
+        <img class="prod-images" src="${img_url}"
+        alt="">
+    </div>
+    <div class="prod-details">
+        
+         <span>$<span>${price}  </span></span>
+       
+        <button class="shop-item-button" type="button" onClick="postCartItem('${ID}')">ADD TO CART</button>
+    
+        
+    </div>
+ 
+ </div>`
+ song.appendChild(listen)
+ console.log(song)
+
+    }
+}
+
+
+function addtocart(res){
+    const cart_items = document.querySelector('#cart .cart-items');
+    if(cart_items.innerHTML !=null){
+        cart_items.innerHTML = null
+    }
+    
+
+    //console.log("Hello")
+    let total_cart_price=0;
+
+    for(let i=0;i<res.data.prods.length;i++){
+        const prod=res.data.prods[i];
+        const ID='a'+prod.id;
+        const name=prod.title;
+        const price=prod.price;
+        const qty=prod.cartItem.quantity;
+        const img_src=prod.imageUrl;
+// total_cart_price=total_cart_price+price;
+
+        //  console.log(res.data[1].cartItem.quantity)
+
+        document.querySelector('.cart-number').innerText = qty;
+
+        const cart_item = document.createElement('div');
+        cart_item.classList.add('cart-row');
+        cart_item.setAttribute('id',`in-cart-${ID}`);
+        total_cart_price = parseFloat(total_cart_price) + parseFloat(price)
+        total_cart_price = total_cart_price.toFixed(2)
+        document.querySelector('#total-value').innerText = `${total_cart_price}`;
+        cart_item.innerHTML = `
+        <span class='cart-item cart-column'>
+        <img class='cart-img' src="${img_src}" alt="">
+            <span>${name}</span>
+    </span>
+    <span class='cart-price cart-column'>${price}</span>
+    <span class='cart-quantity cart-column'>
+        <input type="text" value="${qty}">
+        <button>REMOVE</button>
+    </span>`
+        cart_items.appendChild(cart_item)
+}
+
+
+
+}
+
+
+function showcartPagination({
+    currentPage,
+    hasNextPage, 
+    hasPreviousPage,
+    lastPage,
+    nextPage,
+    previousPage
+    
+    }) {
+        cartPagination.innerHTML = ``
+
+        if (hasPreviousPage) {
+            const btn2 = document.createElement('button')
+            btn2.innerHTML  = previousPage
+            btn2.addEventListener('click',() =>getPaginationProducts(previousPage))
+            cartPagination.appendChild(btn2)
+        }
+            const btn1 = document.createElement('button')
+            btn1.innerHTML  = `<h3>${currentPage}</h3>`
+            btn1.addEventListener('click',() => getPaginationProducts(currentPage))
+            cartPagination.appendChild(btn1)
+    
+        if (hasNextPage) {
+            const btn3 = document.createElement('button')
+            btn3.innerHTML  = nextPage
+            btn3.addEventListener('click',() => getPaginationProducts(nextPage))
+            cartPagination.appendChild(btn3)
+    
+        
+    
+    
+    
+       }
+
+
+    }
+
+
+    function getPaginationProducts(page){
+        axios.get(`http://localhost:3000/cart/?page=${page}`)
+       .then((res)=>{
+        addtocart(res)
+        showcartPagination(res.data)
+    
+        })
+        .catch(err => console.log(err))
+    }
+
+
+
+
+
+
