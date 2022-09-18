@@ -59,7 +59,7 @@ function notifyUsers(message){
     container.appendChild(notification);
     setTimeout(()=>{
         notification.remove();
-    },2500)
+    },5000)
 }
 
 
@@ -126,6 +126,7 @@ parentContainer.addEventListener('click',(e)=>{
             return
         }
         alert('Thanks for the purchase')
+        const cart_items = document.querySelector('#cart .cart-items');
         cart_items.innerHTML = ""
         document.querySelector('.cart-number').innerText = 0
         document.querySelector('#total-value').innerText = `0`;
@@ -249,6 +250,7 @@ function addtocart(res){
     
 
     for(let i=0;i<res.data.prods.length;i++){
+        const cart_items = document.querySelector('#cart .cart-items');
         const prod=res.data.prods[i];
         const ID='a'+prod.id;
         const name=prod.title;
@@ -333,6 +335,15 @@ function showcartPagination({
         .catch(err => console.log(err))
     }
 
+    function postOrderItems(){
+        axios.post("http://localhost:3000/orders")
+        .then(orders=>{
+            console.log(orders.data)
+            notifyUsers(orders.data.message )
+        }).catch(err=>{
+            console.log(err)
+        })
+    }
 
 
 
